@@ -1,0 +1,708 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>USO: Unified Style and Subject-Driven Generation via Disentangled and Reward Learning</title>
+<!-- 引用 .ico 格式的 favicon -->
+<link rel="icon" href="static/uso_files/teaser/uso_2.webp" type="image/png">
+
+<!-- Common stylesheet -->
+<link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+      rel="stylesheet">
+<link href="static/css/bulma.min.css" rel="stylesheet">
+<link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+<link rel="stylesheet" href="static/css/bulma-slider.min.css">
+<link href="static/css/fontawesome.all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+<link href="static/css/style.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Chewy:regular" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script:regular" rel="stylesheet" />
+</head>
+
+<body>
+<div class="column has-text-centered" style="background: #0a0a0a;width: 100%">
+  <br>
+  <br>
+  <h1 class="title is-1 publication-title">
+    <img id="title-icon" src="static/uso_files/teaser/uso_2.webp" alt="Icon">
+    <span style="font-size: 58px; color:#0dcedf; font-weight: bold; font-family: Kaushan Script,regular;background: linear-gradient(to right, #cb7de8, #0ab8e8); -webkit-background-clip: text; color: transparent">
+      <strong>USO</strong></span><br>
+      <span style="font-size: 40px; color:#f4f3f1; font-weight: bold; font-family: Chewy,regular; letter-spacing: 1.5px;">
+        <strong>Unified </strong></span>
+      <span style="font-size: 40px; color:#c788de; font-weight: bold; font-family: Chewy,regular; letter-spacing: 1.5px;">
+        <strong>Style </strong></span>
+      <span style="font-size: 40px; color:#f4f3f1; font-weight: bold; font-family: Chewy,regular; letter-spacing: 1.5px;">
+        <strong>and </strong></span>
+      <span style="font-size: 40px; color:#40b7d8; font-weight: bold; font-family: Chewy,regular; letter-spacing: 1.5px;">
+        <strong>Subject</strong></span>
+      <span style="font-size: 40px; color:#f4f3f1; font-weight: bold; font-family: Chewy,regular; letter-spacing: 1.5px;">
+        <strong>Driven Generation<br></strong></span>
+        <span style="font-size: 40px; color:#f4f3f1; font-weight: bold; font-family: Chewy,regular; letter-spacing: 1.5px;">
+          <strong>via Disentangled and Reward Learning</strong></span>                                        
+  <p id="authors"> 
+    <br>
+    <span style="color:#8b8d90; font-family: Gill Sans">Shaojin Wu&ensp;</span></a>  
+    <span style="color:#8b8d90; font-family: Gill Sans">Mengqi Huang</span>&ensp;</a> 
+    <span style="color:#8b8d90; font-family: Gill Sans">Yufeng Cheng&ensp;</span></a>  
+    <span style="color:#8b8d90; font-family: Gill Sans">Wenxu Wu&ensp;</span></a> 
+    <span style="color:#8b8d90; font-family: Gill Sans">Jiahe Tian&ensp;</span></a> 
+    <span style="color:#8b8d90; font-family: Gill Sans">Yiming Luo&ensp;</span></a> 
+    <span style="color:#8b8d90; font-family: Gill Sans">Fei Ding</span>&ensp;</a>
+    <span style="color:#8b8d90; font-family: Gill Sans">Qian He</span></a>
+    <br> 
+
+  <span style="color:#8b8d90; font-family: Gill Sans; font-size: 22px"> UXO Team <br>Intelligent Creation Lab, ByteDance</span></p>
+
+  <div class="column has-text-centered">
+    <div class="publication-links">
+      <!-- PDF Link. -->
+      <span class="link-block">
+        <a href="https://huggingface.co/papers/2508.18966"
+           class="external-link button is-normal is-rounded is-dark">
+          <span class="icon">
+            <svg class="svg-inline--fa fa-file-pdf fa-w-12" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-pdf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 578 578" data-fa-i2svg=""><path fill="currentColor" d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z"></path></svg>
+          </span>
+          <span>Paper</span>
+        </a>
+      </span>
+      <!-- Arxiv Link. -->
+      <span class="link-block">
+        <a href="https://arxiv.org/abs/2508.18966"
+           class="external-link button is-normal is-rounded is-dark">
+          <span class="icon">
+              <i class="ai ai-arxiv"></i>
+          </span>
+          <span>arXiv</span>
+        </a>
+      </span>
+      <!-- Code Link. -->
+      <span class="link-block">
+        <a href="https://github.com/bytedance/USO"
+           class="external-link button is-normal is-rounded is-dark">
+          <span class="icon">
+            <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+          </span>
+          <span>USO</span>
+          </a>
+      </span>
+      <!-- Model Link. -->
+      <span class="link-block">
+        <a href="https://huggingface.co/bytedance-research/USO" class="external-link button is-normal is-rounded is-dark"  target="_blank">
+          <span class="icon">
+            <img src="static/uso_files/hf.svg" alt="SVG Icon" style="width: 18px; height: 18px; background-color: #f5f5f5;">
+          </span>
+          <span>Model</span>
+          </a>
+      </span>
+      <!-- Dataset Link. -->
+      <span class="link-block">
+        <a href="https://huggingface.co/bytedance-research/USO" class="external-link button is-normal is-rounded is-dark"  target="_blank">
+          <span class="icon">
+            <img src="static/uso_files/ai.svg" alt="SVG Icon" style="width: 18px; height: 18px; background-color: #f5f5f5;">
+          </span>
+          <span>Dataset</span>
+          </a>
+      </span>
+      <!-- Demo Link. -->
+      <span class="link-block">
+        <a href="https://huggingface.co/spaces/bytedance-research/USO-FLUX" class="external-link button is-normal is-rounded is-dark" target="_blank">
+          <span class="icon">
+            <img src="static/uso_files/gradio.svg" alt="SVG Icon" style="width: 18px; height: 18px; background-color: #f5f5f5;">
+          </span>
+          <span>Demo</span>
+          </a>
+      </span>
+      <!-- UNO Link. -->
+      <span class="link-block">
+        <a href="https://github.com/bytedance/UNO"
+           class="external-link button is-normal is-rounded is-dark">
+          <span class="icon">
+            <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+          </span>
+          <span>UNO</span>
+          </a>
+      </span>
+
+    </div>
+  </div>
+</div>
+
+<!--=================Teasers==========================-->
+<section class="hero is-small">
+  <div class="hero-body" style="background: #070707; width: 100%; padding: 0;">
+    <div class="carousel-teaser-container" id="container">
+      <div class="carousel-teaser" id="carousel">
+        <!-- loop1 -->
+        <img src="static/uso_files/teaser/1.webp" alt="Image 1" class="teaser-img">
+        <img src="static/uso_files/teaser/2.webp" alt="Image 2" class="teaser-img">
+        <img src="static/uso_files/teaser/3.webp" alt="Image 3" class="teaser-img">
+        <img src="static/uso_files/teaser/4.webp" alt="Image 4" class="teaser-img">
+        <img src="static/uso_files/teaser/5.webp" alt="Image 5" class="teaser-img">
+        <img src="static/uso_files/teaser/6.webp" alt="Image 6" class="teaser-img">        
+        <!-- loop2 -->
+        <img src="static/uso_files/teaser/1.webp" alt="Image 1" class="teaser-img">
+        <img src="static/uso_files/teaser/2.webp" alt="Image 2" class="teaser-img">
+        <img src="static/uso_files/teaser/3.webp" alt="Image 3" class="teaser-img">
+        <img src="static/uso_files/teaser/4.webp" alt="Image 4" class="teaser-img">
+        <img src="static/uso_files/teaser/5.webp" alt="Image 5" class="teaser-img">
+        <img src="static/uso_files/teaser/6.webp" alt="Image 6" class="teaser-img">        
+      </div>
+    </div>
+  </div>
+  <!-- Added instruction text -->
+  <div class="drag-instruction">
+    ✨ Press and hold the mouse button to drag and view
+  </div>  
+    <div class="teaser_text" style="color:#f4f3f1;">
+      <p>We announce <b>USO</b>, a unified style-subject optimized customization model and the latest addition to the UXO family.
+        USO can freely combine arbitrary subjects with arbitrary styles in any scenarios, 
+        delivering outputs with high subject/identity consistency and strong style fidelity while ensuring natural, non-plastic portraits.
+        In line with our past practice, we will open-source the full project, including training code, inference scripts, model weights, and datasets, 
+        to advance research and empower the open-source community.</p>
+      </div>
+</section>
+
+<div class="content_one">
+  <h2 style="text-align:center; color:#f4f3f1;"><b>What can USO do?</b></h2><br>
+
+<!-- slider r->l -->
+  <div class="carousel-container">
+    <div class="carousel-content-float">
+      <img src="static/uso_files/slider/subject/ref.webp" alt="Original">
+    </div>
+  <div class="carousel carousel-scroll-left">
+    <!-- loop1 -->
+    <img src="static/uso_files/slider/subject/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/subject/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/subject/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/subject/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/subject/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/subject/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/subject/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/subject/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/subject/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/subject/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/subject/11.webp" alt="Image 11">
+    <!-- loop2 -->
+    <img src="static/uso_files/slider/subject/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/subject/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/subject/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/subject/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/subject/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/subject/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/subject/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/subject/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/subject/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/subject/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/subject/11.webp" alt="Image 11">
+  </div>
+</div>
+
+<!-- slider l->r -->
+<div class="carousel-container">
+    <div class="carousel-content-float">
+      <img src="static/uso_files/slider/identity1/ref.webp" alt="Original">
+    </div>
+  <div class="carousel carousel-scroll-right">
+    <!-- loop1 -->
+    <img src="static/uso_files/slider/identity1/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/identity1/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/identity1/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/identity1/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/identity1/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/identity1/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/identity1/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/identity1/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/identity1/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/identity1/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/identity1/11.webp" alt="Image 11">
+    <img src="static/uso_files/slider/identity1/12.webp" alt="Image 12">
+    <img src="static/uso_files/slider/identity1/13.webp" alt="Image 13">
+    <!-- loop2 -->
+    <img src="static/uso_files/slider/identity1/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/identity1/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/identity1/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/identity1/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/identity1/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/identity1/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/identity1/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/identity1/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/identity1/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/identity1/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/identity1/11.webp" alt="Image 11">
+    <img src="static/uso_files/slider/identity1/12.webp" alt="Image 12">
+    <img src="static/uso_files/slider/identity1/13.webp" alt="Image 13">
+  </div>
+</div>
+
+<!-- slider r->l -->
+<div class="carousel-container">
+    <div class="carousel-content-float">
+      <img src="static/uso_files/slider/identity2/ref.webp" alt="Original">
+    </div>
+  <div class="carousel carousel-scroll-left">
+    <!-- loop1 -->
+    <img src="static/uso_files/slider/identity2/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/identity2/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/identity2/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/identity2/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/identity2/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/identity2/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/identity2/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/identity2/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/identity2/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/identity2/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/identity2/11.webp" alt="Image 11">
+    <img src="static/uso_files/slider/identity2/12.webp" alt="Image 12">
+    <img src="static/uso_files/slider/identity2/13.webp" alt="Image 13">
+    <!-- loop2 -->
+    <img src="static/uso_files/slider/identity2/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/identity2/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/identity2/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/identity2/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/identity2/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/identity2/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/identity2/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/identity2/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/identity2/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/identity2/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/identity2/11.webp" alt="Image 11">
+    <img src="static/uso_files/slider/identity2/12.webp" alt="Image 12">
+    <img src="static/uso_files/slider/identity2/13.webp" alt="Image 13">
+  </div>
+</div>
+
+<!-- slider l->r -->
+<div class="carousel-container">
+    <div class="carousel-style-float">
+      <img src="static/uso_files/slider/style1/ref.webp" alt="Original">
+    </div>
+  <div class="carousel carousel-scroll-right">
+    <!-- loop1 -->
+    <img src="static/uso_files/slider/style1/0.webp" alt="Image 0">
+    <img src="static/uso_files/slider/style1/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style1/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style1/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style1/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style1/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style1/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style1/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style1/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/style1/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/style1/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/style1/11.webp" alt="Image 11">
+    <!-- loop2 -->
+    <img src="static/uso_files/slider/style1/0.webp" alt="Image 0">
+    <img src="static/uso_files/slider/style1/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style1/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style1/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style1/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style1/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style1/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style1/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style1/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/style1/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/style1/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/style1/11.webp" alt="Image 11">
+  </div>
+</div>
+
+<!-- slider r->l -->
+<div class="carousel-container">
+    <div class="carousel-style-float">
+      <img src="static/uso_files/slider/style2/ref.webp" alt="Original">
+    </div>
+  <div class="carousel carousel-scroll-left">
+    <!-- loop1 -->
+    <img src="static/uso_files/slider/style2/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style2/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style2/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style2/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style2/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style2/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style2/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style2/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/style2/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/style2/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/style2/11.webp" alt="Image 11">
+    <img src="static/uso_files/slider/style2/12.webp" alt="Image 12">
+    <img src="static/uso_files/slider/style2/13.webp" alt="Image 13">
+    <img src="static/uso_files/slider/style2/14.webp" alt="Image 14">
+    <img src="static/uso_files/slider/style2/15.webp" alt="Image 15">
+
+    <!-- loop2 -->
+    <img src="static/uso_files/slider/style2/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style2/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style2/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style2/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style2/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style2/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style2/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style2/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/style2/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/style2/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/style2/11.webp" alt="Image 11">
+    <img src="static/uso_files/slider/style2/12.webp" alt="Image 12">
+    <img src="static/uso_files/slider/style2/13.webp" alt="Image 13">
+    <img src="static/uso_files/slider/style2/14.webp" alt="Image 14">
+    <img src="static/uso_files/slider/style2/15.webp" alt="Image 15">
+  </div>
+</div>
+
+<!-- slider l->r -->
+<div class="carousel-container">
+    <div class="carousel-style-float">
+      <img src="static/uso_files/slider/style3/ref.webp" alt="Original">
+    </div>
+  <div class="carousel carousel-scroll-right">
+    <!-- loop1 -->
+    <img src="static/uso_files/slider/style3/0.webp" alt="Image 0">
+    <img src="static/uso_files/slider/style3/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style3/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style3/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style3/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style3/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style3/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style3/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style3/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/style3/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/style3/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/style3/11.webp" alt="Image 11">
+    <img src="static/uso_files/slider/style3/12.webp" alt="Image 12">
+    <img src="static/uso_files/slider/style3/13.webp" alt="Image 13">
+    <img src="static/uso_files/slider/style3/14.webp" alt="Image 14">
+    <img src="static/uso_files/slider/style3/15.webp" alt="Image 15">
+    <img src="static/uso_files/slider/style3/16.webp" alt="Image 16">
+    <!-- loop2 -->
+    <img src="static/uso_files/slider/style3/0.webp" alt="Image 0">
+    <img src="static/uso_files/slider/style3/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style3/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style3/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style3/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style3/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style3/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style3/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style3/8.webp" alt="Image 8">
+    <img src="static/uso_files/slider/style3/9.webp" alt="Image 9">
+    <img src="static/uso_files/slider/style3/10.webp" alt="Image 10">
+    <img src="static/uso_files/slider/style3/11.webp" alt="Image 11">
+    <img src="static/uso_files/slider/style3/12.webp" alt="Image 12">
+    <img src="static/uso_files/slider/style3/13.webp" alt="Image 13">
+    <img src="static/uso_files/slider/style3/14.webp" alt="Image 14">
+    <img src="static/uso_files/slider/style3/15.webp" alt="Image 15">
+    <img src="static/uso_files/slider/style3/16.webp" alt="Image 16">
+  </div>  
+</div>  
+
+<!-- slider r->l -->
+<div class="carousel-container">
+    <div class="carousel-content-float">
+      <img src="static/uso_files/slider/style_subject1/ref1.webp" alt="Original">
+    </div>
+    <div class="carousel-style-float" style="left: 20px; top: 130px;">
+      <img src="static/uso_files/slider/style_subject1/ref2.webp" alt="Original">
+    </div>
+  <div class="carousel carousel-scroll-left">
+    <!-- loop1 -->
+    <img src="static/uso_files/slider/style_subject1/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style_subject1/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style_subject1/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style_subject1/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style_subject1/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style_subject1/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style_subject1/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style_subject1/8.webp" alt="Image 8">
+    <!-- loop2 -->
+    <img src="static/uso_files/slider/style_subject1/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style_subject1/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style_subject1/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style_subject1/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style_subject1/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style_subject1/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style_subject1/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style_subject1/8.webp" alt="Image 8">
+</div>
+</div>
+
+<!-- slider l->r -->
+<div class="carousel-container">
+    <div class="carousel-content-float">
+      <img src="static/uso_files/slider/style_subject2/ref1.webp" alt="Original">
+    </div>
+    <div class="carousel-style-float" style="left: 20px; top: 130px;">
+      <img src="static/uso_files/slider/style_subject2/ref2.webp" alt="Original">
+    </div>
+  <div class="carousel carousel-scroll-right">
+    <!-- loop1 -->
+    <img src="static/uso_files/slider/style_subject2/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style_subject2/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style_subject2/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style_subject2/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style_subject2/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style_subject2/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style_subject2/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style_subject2/8.webp" alt="Image 8">
+    <!-- loop2 -->
+    <img src="static/uso_files/slider/style_subject2/1.webp" alt="Image 1">
+    <img src="static/uso_files/slider/style_subject2/2.webp" alt="Image 2">
+    <img src="static/uso_files/slider/style_subject2/3.webp" alt="Image 3">
+    <img src="static/uso_files/slider/style_subject2/4.webp" alt="Image 4">
+    <img src="static/uso_files/slider/style_subject2/5.webp" alt="Image 5">
+    <img src="static/uso_files/slider/style_subject2/6.webp" alt="Image 6">
+    <img src="static/uso_files/slider/style_subject2/7.webp" alt="Image 7">
+    <img src="static/uso_files/slider/style_subject2/8.webp" alt="Image 8">
+</div>
+</div>
+
+</div>  
+
+<div class="content_two">
+  <!-- <div class="hero-body" style="background: #f7fbfb;width: 100%"></div> -->
+  <h2 style="text-align:center; color:#f4f3f1;"><b>Abstract</b></h2>
+  <br>
+  <p>Existing literature typically treats style-driven and subject-driven generation as two disjoint
+tasks: the former prioritizes stylistic similarity, whereas the latter insists on subject consistency,
+resulting in an apparent antagonism. We argue that both objectives can be unified under a
+single framework because they ultimately concern the disentanglement and re-composition of
+content and style, a long-standing theme in style-driven research. To this end, we present <b>USO</b>,
+a <b>U</b>nified <b>S</b>tyle-<b>S</b>ubject <b>O</b>ptimized customization model. First, we construct a large-scale triplet
+dataset consisting of content images, style images, and their corresponding identity1d content images.
+Second, we introduce a disentangled learning scheme that simultaneously aligns style features and
+disentangles content from style through two complementary objectives, style-alignment training and
+content-style disentanglement training. Third, we incorporate a style reward-learning paradigm
+denoted as SRL to further enhance the model's performance. Finally, we release USO-Bench,
+the first benchmark that jointly evaluates style similarity and subject fidelity across multiple
+metrics. Extensive experiments demonstrate that USO achieves state-of-the-art performance
+among open-source models along both dimensions of subject consistency and style similarity.</p>
+</div>
+
+
+<br>
+<div class="content_two">
+  <!-- <div class="hero-body" style="background: #f7fbfb;width: 100%"></div> -->
+  <h2 style="text-align:center; color:#f4f3f1;"><b>How does it work?</b></h2><br>
+  <img class="summary-img" src="static/uso_files/method/uso.webp" style="width:100%;">
+<br>
+  <p>USO unifies subject-driven and style-driven generation in
+two stages: Stage 1 aligns SigLIP embeddings via style-alignment training to yield a style-capable model; Stage 2
+disentangles the conditional encoders and trains on triplets to enable the joint conditional generation. Finally, a
+style-reward learning paradigm supervises both stages to yield a stronger unified model.</p>
+</div>
+<br>
+
+<br>
+<div class="content_two">
+  <h2 style="text-align:center; color:#f4f3f1;"><b>Comparison with State-of-the-Art Methods</b></h2>
+  <br>
+  <img class="summary-img" src="static/uso_files/comparison/subject.webp" style="width:100%;">
+  <div class="result-instruction">
+    Qualitative comparison with different methods on <b>subject-driven</b> generation.
+  </div>  
+  <br>
+
+  <br>
+  <img class="summary-img" src="static/uso_files/comparison/style.webp" style="width:100%;">
+  <div class="result-instruction">
+    Qualitative comparison with different methods on <b>style-driven</b> generation..
+  </div> 
+  <br>
+
+  <br>
+  <img class="summary-img" src="static/uso_files/comparison/id.webp" style="width:100%;">
+  <div class="result-instruction">
+    Qualitative comparison with different methods on <b>identity-driven</b> generation
+  </div> 
+  <br>  
+
+  <br>
+  <img class="summary-img" src="static/uso_files/comparison/ipstyle.webp" style="width:100%;">
+  <div class="result-instruction">
+    Qualitative comparison with different methods on <b>style-subject-driven</b> generation.
+  </div> 
+  <br>  
+</div>  
+
+<div class="content_two">
+  <h2 style="text-align:center; color:#f4f3f1;"><b>Disclaimer</b></h2><br>
+  <p>
+    We open-source this project for academic research. The vast majority of images 
+    used in this project are either generated or from open-source datasets. If you have any concerns, 
+    please contact us, and we will promptly remove any inappropriate content. 
+    Our project is released under the Apache 2.0 License. If you apply to other base models, 
+    please ensure that you comply with the original licensing terms. 
+    <br><br>This research aims to advance the field of generative AI. Users are free to 
+    create images using this tool, provided they comply with local laws and exercise 
+    responsible usage. The developers are not liable for any misuse of the tool by users.</p>
+  <br>
+</div>
+
+<div class="result-instruction" style="font-size: 18px;">
+  ✨ If you find this project useful for your research, please consider citing our paper:
+</div> 
+<div class="teaser_text" style="color: #fefefd;">
+  <pre><code>@article{wu2025uso,
+    title={USO: Unified Style and Subject-Driven Generation via Disentangled and Reward Learning},
+    author={Shaojin Wu and Mengqi Huang and Yufeng Cheng and Wenxu Wu and Jiahe Tian and Yiming Luo and Fei Ding and Qian He},
+    year={2025},
+    eprint={2508.18966},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV},
+}</code></pre>
+</div>
+
+<br>
+<br>
+<div class="content_two">
+  <p style="text-align: center">
+    Source code of the project page can be found in
+    <span class="publication-authors"><a href="https://github.com/bytedance/USO/tree/gh-pages" target="_blank">USO Github Pages</a></span>.
+  </p>
+</div>
+<br>
+
+<script>
+window.addEventListener('load', function() {
+  const container = document.getElementById('container');
+  const carousel = document.getElementById('carousel');
+  const images = document.querySelectorAll('.teaser-img');
+  
+  // Core state variables
+  let isDragging = false;
+  let startX = 0;
+  let currentX = 0;
+  let scrollSpeed = 1; // Scrolling speed
+  let loopWidth = 0;   // Total width of one image set
+  let isMouseOver = false;
+  
+  // Initialization
+  function init() {
+    if (images.length === 0) return;
+    
+    // Calculate width
+    const firstImg = images[0];
+    const imgWidth = firstImg.offsetWidth || 600;
+    loopWidth = (imgWidth + 10) * 6;
+    
+    // Start scrolling
+    requestAnimationFrame(autoScroll);
+  }
+  
+  // Set position
+  function setPosition(x) {
+    currentX = x;
+    carousel.style.transform = `translateX(${currentX}px)`;
+  }
+  
+  // Auto scroll logic
+  function autoScroll() {
+    if (!isMouseOver && !isDragging && loopWidth > 0) {
+      currentX -= scrollSpeed;
+      
+      if (currentX <= -loopWidth) {
+        currentX += loopWidth;
+      }
+      
+      setPosition(currentX);
+    }
+    requestAnimationFrame(autoScroll);
+  }
+  
+  // Drag start
+  carousel.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX - currentX;
+    carousel.classList.add('dragging');
+    // Temporarily disable hover effects during dragging to prevent conflicts
+    images.forEach(img => {
+      img.style.pointerEvents = 'none';
+    });
+  });
+  
+  // Drag move
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const newX = e.clientX - startX;
+    setPosition(newX);
+  });
+  
+  // Drag end
+  document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    carousel.classList.remove('dragging');
+    // Restore hover effects
+    images.forEach(img => {
+      img.style.pointerEvents = 'auto';
+    });
+    
+    // Boundary correction
+    if (currentX > 0) {
+      carousel.style.transition = 'transform 0.3s ease-out';
+      setPosition(currentX - loopWidth);
+      setTimeout(() => {
+        carousel.style.transition = '';
+      }, 300);
+    } else if (currentX < -loopWidth * 2) {
+      carousel.style.transition = 'transform 0.3s ease-out';
+      setPosition(currentX + loopWidth);
+      setTimeout(() => {
+        carousel.style.transition = '';
+      }, 300);
+    }
+  });
+  
+  // Hover control
+  container.addEventListener('mouseenter', () => {
+    isMouseOver = true;
+  });
+  
+  container.addEventListener('mouseleave', () => {
+    isMouseOver = false;
+    isDragging = false;
+    carousel.classList.remove('dragging');
+    carousel.style.transition = '';
+    // Ensure hover effects are restored when leaving
+    images.forEach(img => {
+      img.style.pointerEvents = 'auto';
+    });
+  });
+  
+  // Touch device support
+  carousel.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].clientX - currentX;
+    carousel.classList.add('dragging');
+  }, { passive: false });
+  
+  document.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const newX = e.touches[0].clientX - startX;
+    setPosition(newX);
+  }, { passive: false });
+  
+  document.addEventListener('touchend', () => {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    carousel.classList.remove('dragging');
+    
+    if (currentX > 0) {
+      carousel.style.transition = 'transform 0.3s ease-out';
+      setPosition(currentX - loopWidth);
+      setTimeout(() => carousel.style.transition = '', 300);
+    } else if (currentX < -loopWidth * 2) {
+      carousel.style.transition = 'transform 0.3s ease-out';
+      setPosition(currentX + loopWidth);
+      setTimeout(() => carousel.style.transition = '', 300);
+    }
+  });
+  
+  // Initialize on load
+  init();
+});
+</script>
+</body>
+</html>
