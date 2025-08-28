@@ -1,0 +1,8 @@
+{
+    "prompt": "",
+    "seed": 321,
+    "usage": "Multi-style-driven",
+    "image_ref1": "./ref1.jpg",
+    "image_ref2": "./ref2.png",
+    "image_ref3": "./ref3.png"
+}

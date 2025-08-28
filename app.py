@@ -48,15 +48,17 @@ badges_text = r"""
 """.strip()
 
 tips = """
- 📌 **What is USO?**
+**What is USO?**  🎨
 USO is a unified style-subject optimized customization model and the latest addition to the UXO family (<a href='https://github.com/bytedance/USO' target='_blank'> USO</a> and <a href='https://github.com/bytedance/UNO' target='_blank'> UNO</a>). 
 It can freely combine any subjects with any styles in any scenarios.
 
- 💡 **How to use?**
+**How to use?**    💡
 We provide step-by-step instructions in our <a href='https://github.com/bytedance/USO' target='_blank'> Github Repo</a>.
 Additionally, try the examples provided below the demo to quickly get familiar with USO and spark your creativity!
 
- ⚡️ The model is trained on 1024x1024 resolution and supports 3 types of usage:
+<details>
+<summary style="cursor: pointer; color: #d34c0e; font-weight: 500;">The model is trained on 1024x1024 resolution and supports 3 types of usage. 📌 Tips:</summary>
+
 * **Only content img**: support following types:
   * Subject/Identity-driven (supports natural prompt, e.g., *A clock on the table.* *The woman near the sea.*, excels in producing **photorealistic portraits**)
   * Style edit (layout-preserved): *Transform the image into Ghibli style/Pixel style/Retro comic style/Watercolor painting style...*.
@@ -64,7 +66,7 @@ Additionally, try the examples provided below the demo to quickly get familiar w
 * **Only style img**: Reference input style and generate anything following prompt. Excelling in this and further support multiple style references (in beta).
 * **Content img + style img**: Place the content into the desired style. 
   * Layout-preserved: set prompt to **empty**.
-  * Layout-shift: using natural prompt."""
+  * Layout-shift: using natural prompt.</details>"""
 
 star = r"""
 If USO is helpful, please help to ⭐ our <a href='https://github.com/bytedance/USO' target='_blank'> Github Repo</a>. Thanks a lot!"""
@@ -207,7 +209,8 @@ def create_demo(
             # cache_examples='lazy',
             outputs=[output_image, download_btn],
             fn=pipeline.gradio_generate,
-            label='row 1: subject-driven; row 2-4: identity-driven; row 5-6: style-driven. row 7-8: style-subject-driven; row 9-10: multi-style-driven task; row 11: txt2img'
+            label='row 1-4: identity/subject-driven; row 5-7: style-subject-driven; row 8-9: style-driven; row 10-12: multi-style-driven task; row 13: txt2img',
+            examples_per_page=15
         )
 
     return demo
