@@ -15,7 +15,7 @@
 
 import os
 import math
-from typing import Literal
+from typing import Literal, Optional
 from torch import Tensor
 
 import torch
@@ -265,19 +265,19 @@ class USOPipeline:
             )
 
     @torch.inference_mode()
-    def gradio_generate_style(
+    def gradio_generate(
         self,
         prompt: str,
-        width: int,
-        height: int,
-        guidance: float,
-        num_steps: int,
-        seed: int,
         image_prompt1: Image.Image,
         image_prompt2: Image.Image,
         image_prompt3: Image.Image,
-        keep_size: bool,
-        content_long_size: int,
+        seed: int,
+        width: int = 1024,
+        height: int = 1024,
+        guidance: float = 4,
+        num_steps: int = 25,
+        keep_size: bool = False,
+        content_long_size: int = 512,
     ):
         ref_content_imgs = [image_prompt1]
         ref_content_imgs = [img for img in ref_content_imgs if isinstance(img, Image.Image)]
@@ -290,7 +290,7 @@ class USOPipeline:
         seed = seed if seed != -1 else torch.randint(0, 10**8, (1,)).item()
 
         # whether keep input image size
-        if keep_size and isinstance(ref_content_imgs[0], Image.Image):
+        if keep_size and len(ref_content_imgs)>0:
             width, height = ref_content_imgs[0].size
             width, height = int(width * (1024 / content_long_size)), int(height * (1024 / content_long_size))
         img = self(

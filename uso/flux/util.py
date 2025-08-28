@@ -332,7 +332,7 @@ def load_flow_model_only_lora(
             lora_ckpt_path = os.environ.get("LORA", None)
         try:
             proj_ckpt_path = hf_hub_download(
-                "bytedance-research/USO", "uso_flux_v1.0/projection_model.safetensors"
+                "bytedance-research/USO", "uso_flux_v1.0/projector.safetensors"
             )
         except Exception as e:
             print(f"Failed to download projection_model checkpoint: {e}")

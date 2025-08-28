@@ -1,0 +1,6 @@
+{
+    "prompt": "Transform the image into Ghibli style.",
+    "seed": 3407,
+    "usage": "Identity-driven",
+    "image_ref1": "./ref.webp"
+}

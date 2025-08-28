@@ -1,0 +1,7 @@
+{
+    "prompt": "A man.",
+    "seed": 321,
+    "usage": "Multi-style-driven",
+    "image_ref2": "./ref1.webp",
+    "image_ref3": "./ref2.webp"
+}

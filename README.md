@@ -5,10 +5,11 @@
 </h3>
 
 <p align="center"> 
-<a href="https://github.com/bytedance/USO"><img alt="Build" src="https://img.shields.io/github/stars/bytedance/USO"></a> 
 <a href="https://bytedance.github.io/USO/"><img alt="Build" src="https://img.shields.io/badge/Project%20Page-USO-blue"></a> 
 <a href="https://arxiv.org/abs/2508.18966"><img alt="Build" src="https://img.shields.io/badge/Tech%20Report-USO-b31b1b.svg"></a>
 <a href="https://huggingface.co/bytedance-research/USO"><img src="https://img.shields.io/static/v1?label=%F0%9F%A4%97%20Hugging%20Face&message=Model&color=green"></a>
+<a href="https://huggingface.co/spaces/bytedance-research/USO"><img src="https://img.shields.io/static/v1?label=%F0%9F%A4%97%20Hugging%20Face&message=demo&color=orange"></a>
+</p>
 </p>
 
 ><p align="center"> <span style="color:#137cf3; font-family: Gill Sans">Shaojin Wu,</span><sup></sup></a>  <span style="color:#137cf3; font-family: Gill Sans">Mengqi Huang,</span></a> <span style="color:#137cf3; font-family: Gill Sans">Yufeng Cheng,</span><sup></sup></a>  <span style="color:#137cf3; font-family: Gill Sans">Wenxu Wu,</span><sup></sup> </a> <span style="color:#137cf3; font-family: Gill Sans">Jiahe Tian,</span><sup></sup></a> <span style="color:#137cf3; font-family: Gill Sans">Yiming Luo,</span><sup></sup></a> <span style="color:#137cf3; font-family: Gill Sans">Fei Ding,</span></a> <span style="color:#137cf3; font-family: Gill Sans">Qian He</span></a> <br> 
@@ -20,7 +21,8 @@
 <p>
 
 ## 🔥 News
-We're hurrying to get everything ready—please stay tuned. ✨
+* **2025.08.28** 🔥 The [demo](https://huggingface.co/spaces/bytedance-research/USO) of USO is released. Try it Now! ⚡️
+* **2025.08.28** 🔥 Update fp8 mode as a primary low vmemory usage support. Gift for consumer-grade GPU users. The peak Vmemory usage is ~16GB now.
 * **2025.08.27** 🔥 The [inference code](https://github.com/bytedance/USO) and [model](https://huggingface.co/bytedance-research/USO) of USO are released.
 * **2025.08.27** 🔥 The [project page](https://bytedance.github.io/USO) of USO is created.
 * **2025.08.27** 🔥 The [technical report](https://arxiv.org/abs/2508.18966) of USO is released.
@@ -65,7 +67,7 @@ export PROJECTION_MODEL="<YOU_SAVE_DIR>/uso_flux_v1.0/projector.safetensors"
 - Directly run the inference scripts, the checkpoints will be downloaded automatically by the `hf_hub_download` function in the code.
 
 ### ✍️ Inference
-Start from the examples below to explore and spark your creativity. ✨
+* Start from the examples below to explore and spark your creativity. ✨
 ```bash
 # the first image is a content reference, and the rest are style references.
 
@@ -80,7 +82,21 @@ python inference.py --prompt "The woman gave an impassioned speech on the podium
 # please keep the first image path empty
 python inference.py --prompt "A handsome man." --image_paths "" "assets/gradio_examples/style3.webp" "assets/gradio_examples/style4.webp" --width 1024 --height 1024
 ```
-You can also compare your results with the results in the `assets/gradio_examples` folder.
+* You can also compare your results with the results in the `assets/gradio_examples` folder.
+
+* For more examples, visit our [project page](https://bytedance.github.io/USO) or try the live [demo](https://huggingface.co/spaces/bytedance-research/USO).
+
+### 🌟 Gradio Demo
+
+```bash
+python app.py
+```
+
+**For low vmemory usage**, please pass the `--offload` and `--name flux-dev-fp8` args. The peak memory usage will be 16GB (Single reference) ~ 18GB (Multi references).
+
+```bash
+python app.py --offload --name flux-dev-fp8
+```
 
 ## 📄 Disclaimer
 <p>
@@ -99,7 +115,7 @@ For the purpose of fostering research and the open-source community, we plan to 
 - [x] Release github repo.
 - [x] Release inference code.
 - [x] Release model checkpoints.
-- Release huggingface space demo.
+- [x] Release huggingface space demo.
 - Release training code.
 - Release dataset.
 
