@@ -184,3 +184,12 @@ output/
 
 logs/
 *.safetensors
+
+
+
+# FOR EXCLUSION OF DOWNLOADED WEIGHTS
+# Ignore everything in weights/
+weights/*
+
+# But don't ignore this file
+!weights/downloader.py
