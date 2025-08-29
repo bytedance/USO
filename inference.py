@@ -16,6 +16,10 @@ import os
 import dataclasses
 from typing import Literal
 
+from dotenv import load_dotenv
+load_dotenv() 
+
+
 from accelerate import Accelerator
 from transformers import HfArgumentParser
 from PIL import Image
@@ -66,7 +70,7 @@ class InferenceArgs:
     ckpt_path: str | None = None
     use_siglip: bool = True
     instruct_edit: bool = False
-    hf_download: bool = True
+    hf_download: bool = False  # set to false, we must not auto download the weights (゜-゜) 
 
 
 def main(args: InferenceArgs):
@@ -76,12 +80,12 @@ def main(args: InferenceArgs):
     siglip_processor = None
     siglip_model = None
     if args.use_siglip:
-        siglip_processor = SiglipImageProcessor.from_pretrained(
-            "google/siglip-so400m-patch14-384"
-        )
-        siglip_model = SiglipVisionModel.from_pretrained(
-            "google/siglip-so400m-patch14-384"
-        )
+
+        # ⚠️ Weights now load from local paths via .env instead of downloading
+        siglip_path = os.getenv("SIGLIP_PATH", "google/siglip-so400m-patch14-384")
+        siglip_processor = SiglipImageProcessor.from_pretrained(siglip_path)
+        siglip_model = SiglipVisionModel.from_pretrained(siglip_path)
+
         siglip_model.eval()
         siglip_model.to(accelerator.device)
         print("SigLIP model loaded successfully")
