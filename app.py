@@ -17,6 +17,10 @@ import json
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv() 
+
+
 import gradio as gr
 import torch
 
@@ -100,17 +104,22 @@ def create_demo(
     device: str = "cuda" if torch.cuda.is_available() else "cpu",
     offload: bool = False,
 ):
+
+    # hf_download set to false to prevent download of weights
     pipeline = USOPipeline(
-        model_type, device, offload, only_lora=True, lora_rank=128, hf_download=True
+        model_type, device, offload, only_lora=True, lora_rank=128, hf_download=False
     )
     print("USOPipeline loaded successfully")
 
-    siglip_processor = SiglipImageProcessor.from_pretrained(
-        "google/siglip-so400m-patch14-384"
-    )
-    siglip_model = SiglipVisionModel.from_pretrained(
-        "google/siglip-so400m-patch14-384"
-    )
+
+
+
+    # ⚠️ Weights now load from local paths via .env instead of downloading
+    siglip_path = os.getenv("SIGLIP_PATH", "google/siglip-so400m-patch14-384")
+    siglip_processor = SiglipImageProcessor.from_pretrained(siglip_path)
+    siglip_model = SiglipVisionModel.from_pretrained(siglip_path)
+    
+    
     siglip_model.eval()
     siglip_model.to(device)
     pipeline.model.vision_encoder = siglip_model
