@@ -18,7 +18,7 @@
 
 <p align="center">
     <img src="assets/teaser.webp" width="1024"/>
-<p>
+</p>
 
 ## 🔥 News
 * **2025.08.28** 🔥 The [demo](https://huggingface.co/spaces/bytedance-research/USO) of USO is released. Try it Now! ⚡️
@@ -102,6 +102,45 @@ export FLUX_DEV_FP8="YOUR_FLUX_DEV_PATH"
 
 python app.py --offload --name flux-dev-fp8
 ```
+
+## 🌈 More examples
+We provide some prompts and results to help you better understand the model. You can check our [paper](https://arxiv.org/abs/2508.18966) or [project page](https://bytedance.github.io/USO/) for more visualizations.
+
+#### Subject/Identity-driven generation
+If you want to place a subject into new scene, please use natural language like "A dog/man/woman is doing...". If you only want to transfer the style but keep the layout, please an use instructive prompt like "Transform the style into ... style". For portraits-preserved generation, USO excels at producing high skin-detail images. A practical guideline: use half-body close-ups for half-body prompts, and full-body images when the pose or framing changes significantly.
+<p align="center">
+    <img src="assets/show_case1.webp" width="1024"/>
+<p>
+<p align="center">
+    <img src="assets/show_case2.webp" width="1024"/>
+</p>
+<p align="center">
+    <img src="assets/show_case3.webp" width="1024"/>
+</p>
+<p align="center">
+    <img src="assets/show_case4.webp" width="1024"/>
+</p>
+
+#### Style-driven generation
+Just upload one or two style images, and use natural language to create want you want. USO will generate images follow your prompt and match the style you uploaded.
+<p align="center">
+    <img src="assets/show_case5.webp" width="1024"/>
+<p>
+<p align="center">
+    <img src="assets/show_case6.webp" width="1024"/>
+</p>
+
+#### Style-subject driven generation
+USO can stylize a single content reference with one or two style refs. For layout-preserved generation, just set the prompt to empty.
+`Layout-preserved generation`
+<p align="center">
+    <img src="assets/show_case7.webp" width="1024"/>
+<p>
+
+`Layout-shifted generation`
+<p align="center">
+    <img src="assets/show_case8.webp" width="1024"/>
+</p>
 
 ## 📄 Disclaimer
 <p>
