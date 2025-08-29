@@ -42,29 +42,28 @@ source uso_env/bin/activate
 ## or
 conda create -n uso_env python=3.10 -y
 conda activate uso_env
+
+## install torch
+## recommended version:
+pip install torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cu124 
+
 ## then install the requirements by you need
 pip install -r requirements.txt # legacy installation command
 ```
 
-Then download checkpoints in one of the following ways:
-- **Suppose you already have some of the checkpoints**
+Then download checkpoints:
 ```bash
-# 1. download USO official checkpoints
+# 1. set up .env file
+cp example.env .env
+
+# 2. set your huggingface token in .env (open the file and change this value to your token)
+HF_TOKEN=your_huggingface_token_here
+
+#3. download the necessary weights (comment any weights you don't need)
 pip install huggingface_hub
-huggingface-cli download bytedance-research/USO --local-dir <YOU_SAVE_DIR> --local-dir-use-symlinks False
-
-# 2. Then set the environment variable for FLUX.1 base model
-export AE="YOUR_AE_PATH"
-export FLUX_DEV="YOUR_FLUX_DEV_PATH"
-export T5="YOUR_T5_PATH"
-export CLIP="YOUR_CLIP_PATH"
-# or export HF_HOME="YOUR_HF_HOME"
-
-# 3. Then set the environment variable for USO
-export LORA="<YOU_SAVE_DIR>/uso_flux_v1.0/dit_lora.safetensors"
-export PROJECTION_MODEL="<YOU_SAVE_DIR>/uso_flux_v1.0/projector.safetensors"
+python ./weights/downloader.py
 ```
-- Directly run the inference scripts, the checkpoints will be downloaded automatically by the `hf_hub_download` function in the code.
+- **IF YOU HAVE WEIGHTS, COMMENT OUT WHAT YOU DON'T NEED IN ./weights/downloader.py**
 
 ### ✍️ Inference
 * Start from the examples below to explore and spark your creativity. ✨
@@ -81,6 +80,9 @@ python inference.py --prompt "The woman gave an impassioned speech on the podium
 # for multi-style generation
 # please keep the first image path empty
 python inference.py --prompt "A handsome man." --image_paths "" "assets/gradio_examples/style3.webp" "assets/gradio_examples/style4.webp" --width 1024 --height 1024
+
+# for low vram:
+python inference.py --prompt "your propmt" --image_paths "your_image.jpg" --width 1024 --height 1024 --offload --model_type flux-dev-fp8 
 ```
 * You can also compare your results with the results in the `assets/gradio_examples` folder.
 
