@@ -1,6 +1,6 @@
 {
     "prompt": "The man gave an impassioned speech on the podium. ",
-    "seed": 321,
+    "seed": 42,
     "usage": "Style-subject-driven (layout-shifted)",
     "image_ref1": "./ref1.webp",
     "image_ref2": "./ref2.webp"

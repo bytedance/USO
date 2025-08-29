@@ -22,7 +22,7 @@
 
 ## 🔥 News
 * **2025.08.28** 🔥 The [demo](https://huggingface.co/spaces/bytedance-research/USO) of USO is released. Try it Now! ⚡️
-* **2025.08.28** 🔥 Update fp8 mode as a primary low vmemory usage support. Gift for consumer-grade GPU users. The peak Vmemory usage is ~16GB now.
+* **2025.08.28** 🔥 Update fp8 mode as a primary low vmemory usage support (please scroll down). Gift for consumer-grade GPU users. The peak Vmemory usage is ~16GB now.
 * **2025.08.27** 🔥 The [inference code](https://github.com/bytedance/USO) and [model](https://huggingface.co/bytedance-research/USO) of USO are released.
 * **2025.08.27** 🔥 The [project page](https://bytedance.github.io/USO) of USO is created.
 * **2025.08.27** 🔥 The [technical report](https://arxiv.org/abs/2508.18966) of USO is released.
@@ -95,6 +95,9 @@ python app.py
 **For low vmemory usage**, please pass the `--offload` and `--name flux-dev-fp8` args. The peak memory usage will be 16GB (Single reference) ~ 18GB (Multi references).
 
 ```bash
+# please use FLUX_DEV_FP8 replace FLUX_DEV
+export FLUX_DEV_FP8="YOUR_FLUX_DEV_PATH"
+
 python app.py --offload --name flux-dev-fp8
 ```
 
