@@ -46,9 +46,9 @@ def download_siglip():
                       local_dir_use_symlinks=False)
 
 if __name__ == "__main__":
-    # download_flux()
+    download_uso()
+    download_flux()
     # download_flux_krea()
-    # download_uso()
-    # download_t5()
-    # download_clip()
+    download_t5()
+    download_clip()
     download_siglip()
