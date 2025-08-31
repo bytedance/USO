@@ -391,7 +391,7 @@ def load_flow_model_only_lora(
                 sd[k.replace("module.", "")] = dit_state[k]
             sd.update(lora_sd)
             missing, unexpected = model.load_state_dict(sd, strict=False, assign=True)
-            model.to(str(device))
+        model.to(str(device))
         print_load_warning(missing, unexpected)
     return model
 
