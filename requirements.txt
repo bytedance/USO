@@ -11,7 +11,7 @@ matplotlib
 safetensors==0.4.5
 scipy==1.10.1
 numpy==1.24.4
-onnxruntime-gpu
+onnxruntime
 # httpx==0.23.3
 git+https://github.com/openai/CLIP.git
 # --extra-index-url https://download.pytorch.org/whl/cu124

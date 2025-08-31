@@ -101,7 +101,7 @@ def get_examples(examples_dir: str = "assets/examples") -> list:
 
 def create_demo(
     model_type: str,
-    device: str = "cuda" if torch.cuda.is_available() else "cpu",
+    device: str = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"),
     offload: bool = False,
 ):
 
@@ -233,7 +233,7 @@ if __name__ == "__main__":
     @dataclasses.dataclass
     class AppArgs:
         name: Literal["flux-dev", "flux-dev-fp8", "flux-schnell", "flux-krea-dev"] = "flux-dev"
-        device: Literal["cuda", "cpu"] = "cuda" if torch.cuda.is_available() else "cpu"
+        device: Literal["cuda", "cpu", "mps"] = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
         offload: bool = dataclasses.field(
             default=False,
             metadata={

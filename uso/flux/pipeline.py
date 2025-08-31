@@ -257,8 +257,9 @@ class USOPipeline:
         height = 16 * (height // 16)
 
         device_type = self.device if isinstance(self.device, str) else self.device.type
+        dtype = torch.bfloat16 if device_type != "mps" else torch.float16
         with torch.autocast(
-            enabled=self.use_fp8, device_type=device_type, dtype=torch.bfloat16
+            enabled=self.use_fp8, device_type=device_type, dtype=dtype
         ):
             return self.forward(
                 prompt, width, height, guidance, num_steps, seed, **kwargs
@@ -387,4 +388,5 @@ class USOPipeline:
             return
         for model in models:
             model.cpu()
+        if torch.cuda.is_available():
             torch.cuda.empty_cache()
