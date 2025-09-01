@@ -15,8 +15,10 @@
 import dataclasses
 import json
 import os
+import sys
 from pathlib import Path
 
+sys.path.append(os.getcwd())
 from dotenv import load_dotenv
 load_dotenv() 
 
@@ -24,6 +26,7 @@ load_dotenv()
 import gradio as gr
 import torch
 
+from civitai_downloader import download_lora_from_civitai
 from uso.flux.pipeline import USOPipeline
 from transformers import SiglipVisionModel, SiglipImageProcessor
 
@@ -77,13 +80,12 @@ If USO is helpful, please help to ⭐ our <a href='https://github.com/bytedance/
 
 def get_examples(examples_dir: str = "assets/examples") -> list:
     examples = Path(examples_dir)
-    ans = []  
+    ans = []
     for example in examples.iterdir():
         if not example.is_dir() or len(os.listdir(example)) == 0:
             continue
         with open(example / "config.json") as f:
             example_dict = json.load(f)
-
 
         example_list = []
         example_list.append(example_dict["prompt"])  # prompt
@@ -97,6 +99,13 @@ def get_examples(examples_dir: str = "assets/examples") -> list:
         example_list.append(example_dict["seed"])
         ans.append(example_list)
     return ans
+
+
+def get_lora_files():
+    LORA_DIR = "loras"
+    if not os.path.exists(LORA_DIR):
+        return []
+    return [f for f in os.listdir(LORA_DIR) if f.endswith(".safetensors")]
 
 
 def create_demo(
@@ -132,6 +141,20 @@ def create_demo(
         gr.Markdown(tips)
         with gr.Row():
             with gr.Column():
+                with gr.Accordion("LoRA Management", open=True):
+                    with gr.Row():
+                        lora_model_id = gr.Textbox(label="Civitai Model ID")
+                        lora_api_key = gr.Textbox(label="Civitai API Key", type="password")
+                        download_lora_btn = gr.Button("Download LoRA")
+                        download_lora_status = gr.Textbox(label="Status", interactive=False)
+                    with gr.Row():
+                        lora_checkboxes = gr.CheckboxGroup(
+                            label="Select LoRAs", choices=get_lora_files(), interactive=True
+                        )
+                        refresh_lora_btn = gr.Button("Refresh")
+                    with gr.Row():
+                        lora_weights = gr.Textbox(label="LoRA Weights (comma-separated)", value="1.0")
+
                 prompt = gr.Textbox(label="Prompt", value="A beautiful woman.")
                 with gr.Row():
                     image_prompt1 = gr.Image(
@@ -172,7 +195,7 @@ def create_demo(
                         )
                         content_long_size = gr.Slider(
                             0, 1024, 512, step=16, label="Content reference size"
-                        )                        
+                        )
                         seed = gr.Number(-1, label="Seed (-1 for random)")
 
                 generate_btn = gr.Button("Generate")
@@ -184,24 +207,48 @@ def create_demo(
                     label="Download full-resolution", type="filepath", interactive=False
                 )
 
+            def download_and_refresh(model_id, api_key):
+                try:
+                    message = download_lora_from_civitai(model_id, api_key)
+                    return message, gr.update(choices=get_lora_files())
+                except Exception as e:
+                    return str(e), gr.update()
+
+            download_lora_btn.click(
+                fn=download_and_refresh,
+                inputs=[lora_model_id, lora_api_key],
+                outputs=[download_lora_status, lora_checkboxes],
+            )
+
+            def refresh_lora_list():
+                return gr.update(choices=get_lora_files())
+
+            refresh_lora_btn.click(
+                fn=refresh_lora_list,
+                inputs=None,
+                outputs=[lora_checkboxes],
+            )
+
             inputs = [
                 prompt,
                 image_prompt1,
                 image_prompt2,
                 image_prompt3,
-                seed,                     
+                seed,
                 width,
                 height,
                 guidance,
                 num_steps,
                 keep_size,
                 content_long_size,
+                lora_checkboxes,
+                lora_weights,
             ]
             generate_btn.click(
                 fn=pipeline.gradio_generate,
                 inputs=inputs,
                 outputs=[output_image, download_btn],
-            )   
+            )
 
         # example_text = gr.Text("", visible=False, label="Case For:")
         examples = get_examples("./assets/gradio_examples")
@@ -214,6 +261,8 @@ def create_demo(
                 image_prompt2,
                 image_prompt3,
                 seed,
+                None, # lora_checkboxes
+                None, # lora_weights
             ],
             # cache_examples='lazy',
             outputs=[output_image, download_btn],

@@ -156,6 +156,7 @@ class USOPipeline:
         self.device = device
         self.offload = offload
         self.model_type = model_type
+        self.lora_dir = "loras"
 
         self.clip = load_clip(self.device)
         self.t5 = load_t5(self.device, max_length=512)
@@ -198,13 +199,13 @@ class USOPipeline:
 
     def set_lora(
         self,
-        local_path: str = None,
+        local_paths: list[str] = None,
         repo_id: str = None,
         name: str = None,
-        lora_weight: int = 0.7,
+        lora_weights: list[float] = None,
     ):
-        checkpoint = load_checkpoint(local_path, repo_id, name)
-        self.update_model_with_lora(checkpoint, lora_weight)
+        checkpoints = [load_checkpoint(p, repo_id, name) for p in local_paths]
+        self.update_model_with_lora(checkpoints, lora_weights)
 
     def set_lora_from_collection(
         self, lora_type: str = "realism", lora_weight: int = 0.7
@@ -214,17 +215,22 @@ class USOPipeline:
         )
         self.update_model_with_lora(checkpoint, lora_weight)
 
-    def update_model_with_lora(self, checkpoint, lora_weight):
-        rank = get_lora_rank(checkpoint)
+    def update_model_with_lora(self, checkpoints, lora_weights):
         lora_attn_procs = {}
-
         for name, _ in self.model.attn_processors.items():
             lora_state_dict = {}
-            for k in checkpoint.keys():
-                if name in k:
-                    lora_state_dict[k[len(name) + 1 :]] = checkpoint[k] * lora_weight
+            for i, checkpoint in enumerate(checkpoints):
+                rank = get_lora_rank(checkpoint)
+                lora_weight = lora_weights[i]
+                for k in checkpoint.keys():
+                    if name in k:
+                        key = k[len(name) + 1 :]
+                        if key in lora_state_dict:
+                            lora_state_dict[key] += checkpoint[k] * lora_weight
+                        else:
+                            lora_state_dict[key] = checkpoint[k] * lora_weight
 
-            if len(lora_state_dict):
+            if len(lora_state_dict) > 0:
                 if name.startswith("single_blocks"):
                     lora_attn_procs[name] = SingleStreamBlockLoraProcessor(
                         dim=3072, rank=rank
@@ -279,7 +285,16 @@ class USOPipeline:
         num_steps: int = 25,
         keep_size: bool = False,
         content_long_size: int = 512,
+        lora_paths: list[str] = None,
+        lora_weights_str: str = "1.0",
     ):
+        if lora_paths:
+            lora_full_paths = [os.path.join(self.lora_dir, p) for p in lora_paths]
+            lora_weights = [float(w.strip()) for w in lora_weights_str.split(",")]
+            if len(lora_weights) == 1:
+                lora_weights = lora_weights * len(lora_full_paths)
+            self.set_lora(local_paths=lora_full_paths, lora_weights=lora_weights)
+
         ref_content_imgs = [image_prompt1]
         ref_content_imgs = [img for img in ref_content_imgs if isinstance(img, Image.Image)]
         ref_content_imgs = [preprocess_ref(img, content_long_size) for img in ref_content_imgs]
