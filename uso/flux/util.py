@@ -34,6 +34,33 @@ from uso.flux.modules.layers import (
 )
 
 
+def _dtype_for_device(device: str | torch.device) -> torch.dtype:
+    """Choose a safe torch dtype for the given device.
+
+    - CUDA: prefer bfloat16 when available, otherwise float16
+    - MPS: use float16
+    - CPU: use float32
+    """
+    dev_type = None
+    if isinstance(device, torch.device):
+        dev_type = device.type
+    elif isinstance(device, str):
+        dev_type = device
+    else:
+        try:
+            dev_type = str(device)
+        except Exception:
+            dev_type = "cpu"
+
+    if dev_type == "cuda":
+        # prefer bfloat16 on CUDA if supported
+        return torch.bfloat16 if torch.cuda.is_available() else torch.float16
+    # On Apple MPS, float16 can be numerically unstable for some ops; prefer float32 for stability
+    if dev_type == "mps":
+        return torch.float32
+    return torch.float32
+
+
 def load_model(ckpt, device="cpu"):
     if ckpt.endswith("safetensors"):
         from safetensors import safe_open
@@ -291,15 +318,39 @@ def load_flow_model(
         ckpt_path = hf_hub_download(configs[name].repo_id, configs[name].repo_flow)
 
     # with torch.device("meta" if ckpt_path is not None else device):
+    chosen_dtype = _dtype_for_device(device)
     with torch.device(device):
-        model = Flux(configs[name].params).to(torch.bfloat16)
+        model = Flux(configs[name].params).to(dtype=chosen_dtype)
 
     if ckpt_path is not None:
         print("Loading main checkpoint")
         # load_sft doesn't support torch.device
         sd = load_model(ckpt_path, device="cpu")
+        # try to load separate projection_model (feature_embedder) and merge
+        proj_path = os.environ.get("PROJECTION_MODEL", "./weights/USO/uso_flux_v1.0/projector.safetensors")
+        if proj_path is not None and os.path.exists(proj_path):
+            try:
+                print(f"Loading projection model from {proj_path} and merging into main state dict")
+                proj_sd = load_sft(proj_path) if proj_path.endswith("safetensors") else torch.load(proj_path, map_location="cpu")
+                # prefer proj_sd values where keys overlap
+                for k, v in proj_sd.items():
+                    sd[k] = v
+            except Exception as e:
+                print(f"Failed to load/merge projection model: {e}")
+        # ensure checkpoint tensors use the same floating dtype as the model to avoid mixed-dtype ops
+        sd = {
+            k: (v.to(dtype=chosen_dtype) if isinstance(v, torch.Tensor) and v.is_floating_point() else v)
+            for k, v in sd.items()
+        }
         missing, unexpected = model.load_state_dict(sd, strict=False, assign=True)
         print_load_warning(missing, unexpected)
+        # If feature_embedder keys are missing in the checkpoint, disable the module
+        if any(k.startswith("feature_embedder.") for k in missing if isinstance(k, str)):
+            print("Feature embedder keys missing in checkpoint; disabling feature_embedder module to avoid uninitialized params.")
+            try:
+                model.feature_embedder = None
+            except Exception:
+                print("Warning: could not set model.feature_embedder = None; proceeding anyway.")
     return model.to(str(device))
 
 
@@ -344,6 +395,8 @@ def load_flow_model_only_lora(
     with torch.device("meta" if ckpt_path is not None else device):
         model = Flux(configs[name].params)
 
+    chosen_dtype = _dtype_for_device(device)
+
     model = set_lora(
         model, lora_rank, device="meta" if lora_ckpt_path is not None else device
     )
@@ -351,15 +404,18 @@ def load_flow_model_only_lora(
     if ckpt_path is not None:
         print(f"Loading lora from {lora_ckpt_path}")
         lora_sd = (
-            load_sft(lora_ckpt_path, device=str(device))
+            load_sft(lora_ckpt_path, device="cpu")
             if lora_ckpt_path.endswith("safetensors")
             else torch.load(lora_ckpt_path, map_location="cpu")
         )
         proj_sd = (
-            load_sft(proj_ckpt_path, device=str(device))
+            load_sft(proj_ckpt_path, device="cpu")
             if proj_ckpt_path.endswith("safetensors")
             else torch.load(proj_ckpt_path, map_location="cpu")
         )
+        # cast lora/proj tensors to chosen dtype to avoid mixed-dtype ops on MPS
+        lora_sd = {k: (v.to(dtype=chosen_dtype) if isinstance(v, torch.Tensor) and v.is_floating_point() else v) for k, v in lora_sd.items()}
+        proj_sd = {k: (v.to(dtype=chosen_dtype) if isinstance(v, torch.Tensor) and v.is_floating_point() else v) for k, v in proj_sd.items()}
         lora_sd.update(proj_sd)
 
         print("Loading main checkpoint")
@@ -380,15 +436,21 @@ def load_flow_model_only_lora(
                     for k, v in sd.items()
                 }
             else:
-                sd = load_sft(ckpt_path, device=str(device))
+                sd = load_sft(ckpt_path, device="cpu")
+                # cast to chosen dtype
+                sd = {k: (v.to(dtype=chosen_dtype) if isinstance(v, torch.Tensor) and v.is_floating_point() else v) for k, v in sd.items()}
 
             sd.update(lora_sd)
             missing, unexpected = model.load_state_dict(sd, strict=False, assign=True)
+            # ensure model params are moved to the runtime device (MPS/CPU/CUDA)
+            model = model.to(str(device))
         else:
             dit_state = torch.load(ckpt_path, map_location="cpu")
             sd = {}
             for k in dit_state.keys():
                 sd[k.replace("module.", "")] = dit_state[k]
+            # cast sd tensors to chosen dtype and update with lora
+            sd = {k: (v.to(dtype=chosen_dtype) if isinstance(v, torch.Tensor) and v.is_floating_point() else v) for k, v in sd.items()}
             sd.update(lora_sd)
             missing, unexpected = model.load_state_dict(sd, strict=False, assign=True)
             model.to(str(device))
@@ -458,13 +520,18 @@ def load_flow_model_quintized(
         ckpt_path = hf_hub_download(configs[name].repo_id, configs[name].repo_flow)
     json_path = hf_hub_download(configs[name].repo_id, "flux_dev_quantization_map.json")
 
-    model = Flux(configs[name].params).to(torch.bfloat16)
+    # choose a safe dtype for this device and construct model with it
+    chosen_dtype = _dtype_for_device(device)
+    model = Flux(configs[name].params).to(dtype=chosen_dtype)
 
     print("Loading checkpoint")
     # load_sft doesn't support torch.device
     sd = load_sft(ckpt_path, device="cpu")
-    sd = {k: v.to(dtype=torch.float8_e4m3fn, device=device) for k, v in sd.items()}
-    model.load_state_dict(sd, assign=True)
+    # convert checkpoint tensors to the chosen dtype to avoid mixed-dtype ops on MPS
+    sd = {k: (v.to(dtype=chosen_dtype) if not str(v.dtype).startswith("torch.float8") else v.to(dtype=torch.float8_e4m3fn, device=device)) for k, v in sd.items()}
+    missing, unexpected = model.load_state_dict(sd, assign=True)
+    print_load_warning(missing, unexpected)
+    model = model.to(str(device))
     return model
     with open(json_path, "r") as f:
         quantization_map = json.load(f)
@@ -477,14 +544,14 @@ def load_flow_model_quintized(
 def load_t5(device: str | torch.device = "cuda", max_length: int = 512) -> HFEmbedder:
     # max length 64, 128, 256 and 512 should work (if your sequence is short enough)
     version = os.environ.get("T5", "xlabs-ai/xflux_text_encoders")
-    return HFEmbedder(version, max_length=max_length, torch_dtype=torch.bfloat16).to(
-        device
-    )
+    chosen = _dtype_for_device(device)
+    return HFEmbedder(version, max_length=max_length, torch_dtype=chosen).to(device)
 
 
 def load_clip(device: str | torch.device = "cuda") -> HFEmbedder:
     version = os.environ.get("CLIP", "openai/clip-vit-large-patch14")
-    return HFEmbedder(version, max_length=77, torch_dtype=torch.bfloat16).to(device)
+    chosen = _dtype_for_device(device)
+    return HFEmbedder(version, max_length=77, torch_dtype=chosen).to(device)
 
 
 def load_ae(
