@@ -17,7 +17,7 @@
 ><span style="font-size: 12px">Intelligent Creation Lab, Bytedance</span></p>
 
 ### 🚩 Updates
-* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx) and our provided examples in `./templates`. You can also browse more [USO examples](https://github.com/bytedance/USO/discussions/28) and share your ideas.
+* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx) and our provided examples in `./workflow`. More tips are available in the README below.
 <p align="center">
 <img src="assets/usoxcomfyui.webp" width=1024 height="auto">
 </p>
@@ -111,7 +111,8 @@ python app.py --offload --name flux-dev-fp8
 We provide some prompts and results to help you better understand the model. You can check our [paper](https://arxiv.org/abs/2508.18966) or [project page](https://bytedance.github.io/USO/) for more visualizations.
 
 #### Subject/Identity-driven generation
-If you want to place a subject into new scene, please use natural language like "A dog/man/woman is doing...". If you only want to transfer the style but keep the layout, please an use instructive prompt like "Transform the style into ... style". For portraits-preserved generation, USO excels at producing high skin-detail images. A practical guideline: use half-body close-ups for half-body prompts, and full-body images when the pose or framing changes significantly.
+<details>
+<summary>If you want to place a subject into new scene, please use natural language like "A dog/man/woman is doing...". If you only want to transfer the style but keep the layout, please an use instructive prompt like "Transform the style into ... style". For portraits-preserved generation, USO excels at producing high skin-detail images. A practical guideline: use half-body close-ups for half-body prompts, and full-body images when the pose or framing changes significantly. </summary>
 <p align="center">
     <img src="assets/show_case1.webp" width="1024"/>
 <p>
@@ -124,18 +125,23 @@ If you want to place a subject into new scene, please use natural language like 
 <p align="center">
     <img src="assets/show_case4.webp" width="1024"/>
 </p>
+</details>
+
 
 #### Style-driven generation
-Just upload one or two style images, and use natural language to create want you want. USO will generate images follow your prompt and match the style you uploaded.
+<details>
+<summary>Just upload one or two style images, and use natural language to create want you want. USO will generate images follow your prompt and match the style you uploaded. </summary>
 <p align="center">
     <img src="assets/show_case5.webp" width="1024"/>
 <p>
 <p align="center">
     <img src="assets/show_case6.webp" width="1024"/>
 </p>
+</details>
 
 #### Style-subject driven generation
-USO can stylize a single content reference with one or two style refs. For layout-preserved generation, just set the prompt to empty.
+<details>
+<summary>USO can stylize a single content reference with one or two style refs. For layout-preserved generation, just set the prompt to empty. </summary>
 `Layout-preserved generation`
 <p align="center">
     <img src="assets/show_case7.webp" width="1024"/>
@@ -145,6 +151,52 @@ USO can stylize a single content reference with one or two style refs. For layou
 <p align="center">
     <img src="assets/show_case8.webp" width="1024"/>
 </p>
+</details>
+
+## ⚙️ ComfyUI examples
+We’re pleased that USO now has native support in ComfyUI. For a quick start, please refer to the official tutorials [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx). To help you reproduce and match the results, we’ve provided several examples in `./workflows`, including **workflows** and their **inputs** and outputs, so you can quickly get familiar with what USO can do. 
+
+**Note:** Our provided workflows differ slightly from the official tutorials. We recommend setting the long side of the content image to 512 pixels to match the training setup. Using a larger content reference image may increase identity similarity but can also lead to unstable results.
+
+**Identity preserved**
+<p align="center">
+    <img src="workflow/example1.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example1.json). Input images can be found in `./workflow`
+
+**Identity stylized**
+<p align="center">
+    <img src="workflow/example3.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example3.json). Input images can be found in `./workflow`
+
+**Identity + style reference**
+<p align="center">
+    <img src="workflow/example2.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example2.json). Input images can be found in `./workflow`
+
+**Single style reference**
+<p align="center">
+    <img src="workflow/example4.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example4.json). Input images can be found in `./workflow`
+<p align="center">
+    <img src="workflow/example6.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example6.json). Input images can be found in `./workflow`
+
+**Multiple style reference**
+<p align="center">
+    <img src="workflow/example5.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example5.json). Input images can be found in `./workflow`
 
 ## 📄 Disclaimer
 <p>
