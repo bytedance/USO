@@ -57,8 +57,11 @@ USO is a unified style-subject optimized customization model and the latest addi
 It can freely combine any subjects with any styles in any scenarios.
 
 **How to use?**    💡
-We provide step-by-step instructions in our <a href='https://github.com/bytedance/USO' target='_blank'> Github Repo</a>.
+We provide step-by-step instructions in our <a href='https://github.com/bytedance/USO#-more-examples' target='_blank'> Github Repo</a>.
 Additionally, try the examples provided below the demo to quickly get familiar with USO and spark your creativity!
+
+**Updates**   🚩
+* 2025.09.04 USO now has native support in ComfyUI (see <a href='https://docs.comfy.org/tutorials/flux/flux-1-uso' target='_blank'>ComfyUI's official documentation</a> for details). For more information, please also check out our <a href='https://github.com/bytedance/USO?tab=readme-ov-file#%EF%B8%8F-comfyui-examples' target='_blank'>GitHub Repo</a>.
 
 <details>
 <summary style="cursor: pointer; color: #d34c0e; font-weight: 500;">The model is trained on 1024x1024 resolution and supports 3 types of usage. 📌 Tips:</summary>
@@ -222,6 +225,10 @@ def create_demo(
             examples_per_page=15
         )
 
+        with gr.Accordion("Local Gradio Demo for Developers", open=False):
+            gr.Markdown(
+                'Please refer to our GitHub repository to [run the USO gradio demo locally](https://github.com/bytedance/USO?tab=readme-ov-file#-gradio-demo).'
+            )
     return demo
 
 

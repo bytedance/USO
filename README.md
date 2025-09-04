@@ -17,7 +17,7 @@
 ><span style="font-size: 12px">Intelligent Creation Lab, Bytedance</span></p>
 
 ### 🚩 Updates
-* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://docs.comfy.org/tutorials/flux/flux-1-uso) and our provided examples in `./workflow`. More tips are available in the README below.
+* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://docs.comfy.org/tutorials/flux/flux-1-uso) and our provided examples in `./workflow`. More tips are available in the [README below](https://github.com/bytedance/USO#%EF%B8%8F-comfyui-examples).
 <p align="center">
 <img src="assets/usoxcomfyui.webp" width=1024 height="auto">
 </p>
@@ -156,7 +156,12 @@ We provide some prompts and results to help you better understand the model. You
 ## ⚙️ ComfyUI examples
 We’re pleased that USO now has native support in ComfyUI. For a quick start, please refer to the official tutorials [USO in ComfyUI](https://docs.comfy.org/tutorials/flux/flux-1-uso). To help you reproduce and match the results, we’ve provided several examples in `./workflows`, including **workflows** and their **inputs** and outputs, so you can quickly get familiar with what USO can do. With USO now fully compatible with the ComfyUI ecosystem, you can combine it with other plugins like ControlNet and LoRA. **We welcome community contributions of more workflows and examples.**
 
-**Note:** Our provided workflows differ slightly from the official tutorials. We recommend setting the long side of the content image to 512 pixels to match the training setup. Using a larger content reference image may increase identity similarity but can also lead to unstable results.
+Now you can easily run USO in ComfyUI. Just update ComfyUI to the latest version (0.3.57), and you’ll find USO in the official templates.
+<p align="center">
+    <img src="assets/comfyui_template.png" width=1024 height="auto">
+</p>
+
+More examples are provided below:
 
 **Identity preserved**
 <p align="center">
