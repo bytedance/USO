@@ -19,7 +19,7 @@
 ### 🚩 Updates
 * **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://docs.comfy.org/tutorials/flux/flux-1-uso) and our provided examples in `./workflow`. More tips are available in the [README below](https://github.com/bytedance/USO#%EF%B8%8F-comfyui-examples).
 <p align="center">
-<img src="assets/usoxcomfyui.webp" width=1024 height="auto">
+<img src="assets/usoxcomfyui_official.jpeg" width=1024 height="auto">
 </p>
 
 * **2025.08.28** 🔥 The [demo](https://huggingface.co/spaces/bytedance-research/USO) of USO is released. Try it Now! ⚡️
@@ -162,6 +162,9 @@ Now you can easily run USO in ComfyUI. Just update ComfyUI to the latest version
 </p>
 
 More examples are provided below:
+<p align="center">
+<img src="assets/usoxcomfyui.webp" width=1024 height="auto">
+</p>
 
 **Identity preserved**
 <p align="center">

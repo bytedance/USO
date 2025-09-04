@@ -52,19 +52,18 @@ badges_text = r"""
 """.strip()
 
 tips = """
-**What is USO?**  🎨
-USO is a unified style-subject optimized customization model and the latest addition to the UXO family (<a href='https://github.com/bytedance/USO' target='_blank'> USO</a> and <a href='https://github.com/bytedance/UNO' target='_blank'> UNO</a>). 
+### What is USO and How to use?
+🎨 USO is a unified style-subject optimized customization model and the latest addition to the UXO family (<a href='https://github.com/bytedance/USO' target='_blank'> USO</a> and <a href='https://github.com/bytedance/UNO' target='_blank'> UNO</a>). 
 It can freely combine any subjects with any styles in any scenarios.
 
-**How to use?**    💡
-We provide step-by-step instructions in our <a href='https://github.com/bytedance/USO#-more-examples' target='_blank'> Github Repo</a>.
-Additionally, try the examples provided below the demo to quickly get familiar with USO and spark your creativity!
+💡 We provide step-by-step instructions in our <a href='https://github.com/bytedance/USO#-more-examples' target='_blank'> Github Repo</a>.
+Additionally, try the examples provided below the demo to quickly get familiar with USO and inspire your creativity!
 
-**Updates**   🚩
-* 2025.09.04 USO now has native support in ComfyUI (see <a href='https://docs.comfy.org/tutorials/flux/flux-1-uso' target='_blank'>ComfyUI's official documentation</a> for details). For more information, please also check out our <a href='https://github.com/bytedance/USO?tab=readme-ov-file#%EF%B8%8F-comfyui-examples' target='_blank'>GitHub Repo</a>.
+### Updates
+🔥 **2025.09.04** USO now has native support in ComfyUI (see <a href='https://docs.comfy.org/tutorials/flux/flux-1-uso' target='_blank'>ComfyUI's official documentation</a> for details). For more information, please also check out our <a href='https://github.com/bytedance/USO?tab=readme-ov-file#%EF%B8%8F-comfyui-examples' target='_blank'>GitHub Repo</a>.
 
 <details>
-<summary style="cursor: pointer; color: #d34c0e; font-weight: 500;">The model is trained on 1024x1024 resolution and supports 3 types of usage. 📌 Tips:</summary>
+<summary style="cursor: pointer; color: #d34c0e; font-weight: 500;">The model is trained on 1024x1024 resolution and supports 3 types of usage. Tips:</summary>
 
 * **Only content img**: support following types:
   * Subject/Identity-driven (supports natural prompt, e.g., *A clock on the table.* *The woman near the sea.*, excels in producing **photorealistic portraits**)
@@ -75,8 +74,8 @@ Additionally, try the examples provided below the demo to quickly get familiar w
   * Layout-preserved: set prompt to **empty**.
   * Layout-shift: using natural prompt.</details>"""
 
-star = r"""
-If USO is helpful, please help to ⭐ our <a href='https://github.com/bytedance/USO' target='_blank'> Github Repo</a>. Thanks a lot!"""
+star = """
+### If USO is helpful, please help to ⭐ our <a href='https://github.com/bytedance/USO' target='_blank'> Github Repo</a>. Thanks a lot!"""
 
 def get_examples(examples_dir: str = "assets/examples") -> list:
     examples = Path(examples_dir)
@@ -186,6 +185,13 @@ def create_demo(
                 download_btn = gr.File(
                     label="Download full-resolution", type="filepath", interactive=False
                 )
+                gr.Markdown(
+                    """
+                    ### ❗️ Important Usage Tips:
+                    - **Input Prompt**: Unless you only need Style Editing ("Transform the style into..."), use natural language ("A dog/man/woman is doing...") instead of instruction descriptions of subject, identity, or style.
+                    - **Input Content Image**: For portrait-preserving generation, USO excels at producing images with high skin detail. A practical guideline: use half-body close-ups when your prompt specifies a half-body subject, and full-body images—especially when the pose changes significantly.
+                    """
+                )                
 
             inputs = [
                 prompt,
