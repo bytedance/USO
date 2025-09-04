@@ -16,11 +16,12 @@
 ><span style="font-size: 13.5px">UXO Team</span><br> 
 ><span style="font-size: 12px">Intelligent Creation Lab, Bytedance</span></p>
 
+### 🚩 Updates
+* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx) and our provided examples in `./templates`. You can also browse more [USO examples](https://github.com/bytedance/USO/discussions/28) and share your ideas.
 <p align="center">
-    <img src="assets/teaser.webp" width="1024"/>
+<img src="assets/usoxcomfyui.webp" width=1024 height="auto">
 </p>
 
-## 🔥 News
 * **2025.08.28** 🔥 The [demo](https://huggingface.co/spaces/bytedance-research/USO) of USO is released. Try it Now! ⚡️
 * **2025.08.28** 🔥 Update fp8 mode as a primary low vmemory usage support (please scroll down). Gift for consumer-grade GPU users. The peak Vmemory usage is ~16GB now.
 * **2025.08.27** 🔥 The [inference code](https://github.com/bytedance/USO) and [model](https://huggingface.co/bytedance-research/USO) of USO are released.
@@ -29,6 +30,9 @@
 
 ## 📖 Introduction
 Existing literature typically treats style-driven and subject-driven generation as two disjoint tasks: the former prioritizes stylistic similarity, whereas the latter insists on subject consistency, resulting in an apparent antagonism. We argue that both objectives can be unified under a single framework because they ultimately concern the disentanglement and re-composition of “content” and “style”, a long-standing theme in style-driven research. To this end, we present USO, a Unified framework for Style driven and subject-driven GeneratiOn. First, we construct a large-scale triplet dataset consisting of content images, style images, and their corresponding stylized content images. Second, we introduce a disentangled learning scheme that simultaneously aligns style features and disentangles content from style through two complementary objectives, style-alignment training and content–style disentanglement training. Third, we incorporate a style reward-learning paradigm to further enhance the model’s performance.
+<p align="center">
+    <img src="assets/teaser.webp" width="1024"/>
+</p>
 
 ## ⚡️ Quick Start
 
