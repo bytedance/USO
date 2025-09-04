@@ -17,7 +17,7 @@
 ><span style="font-size: 12px">Intelligent Creation Lab, Bytedance</span></p>
 
 ### 🚩 Updates
-* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx) and our provided examples in `./workflow`. We have also provided some tips in readme, please slide down.
+* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx) and our provided examples in `./workflow`. More tips are available in the README below.
 <p align="center">
 <img src="assets/usoxcomfyui.webp" width=1024 height="auto">
 </p>
@@ -154,16 +154,49 @@ We provide some prompts and results to help you better understand the model. You
 </details>
 
 ## ⚙️ ComfyUI examples
-We’re pleased that USO now has native support in ComfyUI. For a quick start, please refer to the official tutorials [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx). To help you reproduce and match the results, we’ve provided several examples in `./workflows`, including workflows and their inputs and outputs, so you can quickly get familiar with what USO can do. 
+We’re pleased that USO now has native support in ComfyUI. For a quick start, please refer to the official tutorials [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx). To help you reproduce and match the results, we’ve provided several examples in `./workflows`, including **workflows** and their **inputs** and outputs, so you can quickly get familiar with what USO can do. 
 
 **Note:** Our provided workflows differ slightly from the official tutorials. We recommend setting the long side of the content image to 512 pixels to match the training setup. Using a larger content reference image may increase identity similarity but can also lead to unstable results.
 
-* **Identity preserved**
+**Identity preserved**
 <p align="center">
-    <img src="https://github.com/ByteDance/USO/raw/main/templates/example1.png" width=1024 height="auto">
+    <img src="workflow/example1.png" width=1024 height="auto">
 </p>
 
-![Workflow](workflow/example1.png)
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example1.json). Input images can be found in `./workflow`
+
+**Identity stylized**
+<p align="center">
+    <img src="workflow/example3.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example3.json). Input images can be found in `./workflow`
+
+**Identity + style reference**
+<p align="center">
+    <img src="workflow/example2.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example2.json). Input images can be found in `./workflow`
+
+**Single style reference**
+<p align="center">
+    <img src="workflow/example4.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example4.json). Input images can be found in `./workflow`
+<p align="center">
+    <img src="workflow/example6.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example6.json). Input images can be found in `./workflow`
+
+**Multiple style reference**
+<p align="center">
+    <img src="workflow/example5.png" width=1024 height="auto">
+</p>
+
+Download the image above and drag it into ComfyUI to load the corresponding [workflow](workflow/example5.json). Input images can be found in `./workflow`
 
 ## 📄 Disclaimer
 <p>
