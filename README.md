@@ -17,7 +17,7 @@
 ><span style="font-size: 12px">Intelligent Creation Lab, Bytedance</span></p>
 
 ### 🚩 Updates
-* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx) and our provided examples in `./templates`. You can also browse more [USO examples](https://github.com/bytedance/USO/discussions/28) and share your ideas.
+* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx) and our provided examples.
 <p align="center">
 <img src="assets/usoxcomfyui.webp" width=1024 height="auto">
 </p>
