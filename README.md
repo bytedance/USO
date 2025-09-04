@@ -17,7 +17,7 @@
 ><span style="font-size: 12px">Intelligent Creation Lab, Bytedance</span></p>
 
 ### 🚩 Updates
-* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx) and our provided examples in `./workflow`. More tips are available in the README below.
+* **2025.09.03** 🎉 USO is now natively supported in ComfyUI, see official tutorial [USO in ComfyUI](https://docs.comfy.org/tutorials/flux/flux-1-uso) and our provided examples in `./workflow`. More tips are available in the README below.
 <p align="center">
 <img src="assets/usoxcomfyui.webp" width=1024 height="auto">
 </p>
@@ -154,7 +154,7 @@ We provide some prompts and results to help you better understand the model. You
 </details>
 
 ## ⚙️ ComfyUI examples
-We’re pleased that USO now has native support in ComfyUI. For a quick start, please refer to the official tutorials [USO in ComfyUI](https://github.com/Comfy-Org/docs/blob/main/tutorials/flux/flux-1-uso.mdx). To help you reproduce and match the results, we’ve provided several examples in `./workflows`, including **workflows** and their **inputs** and outputs, so you can quickly get familiar with what USO can do. With USO now fully compatible with the ComfyUI ecosystem, you can combine it with other plugins like ControlNet and LoRA. **We welcome community contributions of more workflows and examples.**
+We’re pleased that USO now has native support in ComfyUI. For a quick start, please refer to the official tutorials [USO in ComfyUI](https://docs.comfy.org/tutorials/flux/flux-1-uso). To help you reproduce and match the results, we’ve provided several examples in `./workflows`, including **workflows** and their **inputs** and outputs, so you can quickly get familiar with what USO can do. With USO now fully compatible with the ComfyUI ecosystem, you can combine it with other plugins like ControlNet and LoRA. **We welcome community contributions of more workflows and examples.**
 
 **Note:** Our provided workflows differ slightly from the official tutorials. We recommend setting the long side of the content image to 512 pixels to match the training setup. Using a larger content reference image may increase identity similarity but can also lead to unstable results.
 
