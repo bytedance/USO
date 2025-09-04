@@ -160,7 +160,7 @@ We’re pleased that USO now has native support in ComfyUI. For a quick start, p
 
 * **Identity preserved**
 <p align="center">
-    <img src="workflow/example1.png" width=1024 height="auto">
+    <img src="https://github.com/ByteDance/USO/raw/main/templates/example1.png" width=1024 height="auto">
 </p>
 
 ![Workflow](workflow/example1.png)
