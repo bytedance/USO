@@ -258,12 +258,21 @@ class USOPipeline:
 
         device_type = self.device if isinstance(self.device, str) else self.device.type
         dtype = torch.bfloat16 if device_type != "mps" else torch.float16
-        with torch.autocast(
-            enabled=self.use_fp8, device_type=device_type, dtype=dtype
-        ):
+        
+        # MPS doesn't support autocast, so we disable it completely for MPS devices
+        if device_type == "mps":
+            # For MPS, run without autocast
             return self.forward(
                 prompt, width, height, guidance, num_steps, seed, **kwargs
             )
+        else:
+            # For CUDA/CPU, use autocast as normal
+            with torch.autocast(
+                enabled=self.use_fp8, device_type=device_type, dtype=dtype
+            ):
+                return self.forward(
+                    prompt, width, height, guidance, num_steps, seed, **kwargs
+                )
 
     @torch.inference_mode()
     def gradio_generate(
@@ -328,8 +337,13 @@ class USOPipeline:
         pe: Literal["d", "h", "w", "o"] = "d",
         siglip_inputs: list[Tensor] | None = None,
     ):
+        # choose dtype for noise: use float32 on MPS to avoid numerical instability
+        device_is_mps = (not isinstance(self.device, str) and self.device.type == "mps") or (
+            isinstance(self.device, str) and self.device == "mps"
+        )
+        noise_dtype = torch.bfloat16 if not device_is_mps else torch.float32
         x = get_noise(
-            1, height, width, device=self.device, dtype=torch.bfloat16, seed=seed
+            1, height, width, device=self.device, dtype=noise_dtype, seed=seed
         )
         timesteps = get_schedule(
             num_steps,
@@ -338,14 +352,14 @@ class USOPipeline:
         )
         if self.offload:
             self.ae.encoder = self.ae.encoder.to(self.device)
-        x_1_refs = [
-            self.ae.encode(
-                (TVF.to_tensor(ref_img) * 2.0 - 1.0)
-                .unsqueeze(0)
-                .to(self.device, torch.float32)
-            ).to(torch.bfloat16)
-            for ref_img in ref_imgs
-        ]
+        # encode references using AE; use float32 on MPS to avoid precision issues
+        ref_enc_dtype = torch.float32 if (not isinstance(self.device, str) and self.device.type == "mps") else torch.bfloat16
+        x_1_refs = []
+        for ref_img in ref_imgs:
+            ref_t = (TVF.to_tensor(ref_img) * 2.0 - 1.0).unsqueeze(0).to(self.device, torch.float32)
+            enc = self.ae.encode(ref_t)
+            # cast encoder output to desired dtype
+            x_1_refs.append(enc.to(ref_enc_dtype))
 
         if self.offload:
             self.offload_model_to_cpu(self.ae.encoder)
@@ -358,6 +372,54 @@ class USOPipeline:
             ref_imgs=x_1_refs,
             pe=pe,
         )
+
+        # debug: print conditioning tensor stats
+        try:
+            if "txt" in inp_cond:
+                t = inp_cond["txt"]
+                print(f"cond txt: device={t.device} dtype={t.dtype} shape={t.shape} min={t.min().item():.6f} max={t.max().item():.6f} mean={t.mean().item():.6f}")
+            if "vec" in inp_cond:
+                v = inp_cond["vec"]
+                print(f"cond vec: device={v.device} dtype={v.dtype} shape={v.shape} min={v.min().item():.6f} max={v.max().item():.6f} mean={v.mean().item():.6f}")
+        except Exception:
+            print("cond stats: <could not compute>")
+
+        # Debug: boost conditioning strength slightly to see if it reduces pixel-snow
+        try:
+            # default to neutral 1.0 unless user overrides via env
+            cond_txt_scale = float(os.environ.get("USO_COND_TXT_SCALE", "1.0"))
+            cond_vec_scale = float(os.environ.get("USO_COND_VEC_SCALE", "1.0"))
+            if "txt" in inp_cond:
+                inp_cond["txt"] = inp_cond["txt"] * cond_txt_scale
+            if "vec" in inp_cond:
+                inp_cond["vec"] = inp_cond["vec"] * cond_vec_scale
+            print(f"applied cond scales txt={cond_txt_scale} vec={cond_vec_scale}")
+        except Exception:
+            pass
+
+        # On MPS, run denoising in float32 to avoid float16/bfloat16 instability
+        if device_is_mps:
+            try:
+                # move model params to float32 on device
+                self.model = self.model.to(dtype=torch.float32, device=self.device)
+            except Exception:
+                # best-effort: try moving to device then cast
+                self.model = self.model.to(str(self.device)).to(dtype=torch.float32)
+
+            def _cast_obj(o):
+                if isinstance(o, torch.Tensor):
+                    return o.to(dtype=torch.float32, device=self.device)
+                if isinstance(o, tuple):
+                    return tuple(_cast_obj(x) for x in o)
+                if isinstance(o, list):
+                    return [_cast_obj(x) for x in o]
+                if isinstance(o, dict):
+                    return {k: _cast_obj(v) for k, v in o.items()}
+                return o
+
+            inp_cond = _cast_obj(inp_cond)
+            if siglip_inputs is not None:
+                siglip_inputs = [s.to(dtype=torch.float32, device=self.device) for s in siglip_inputs]
 
         if self.offload:
             self.offload_model_to_cpu(self.t5, self.clip)
@@ -374,13 +436,40 @@ class USOPipeline:
         if self.offload:
             self.offload_model_to_cpu(self.model)
             self.ae.decoder.to(x.device)
+        # debug: inspect denoised latent
+        try:
+            print(f"denoised x: device={x.device} dtype={x.dtype} shape={x.shape} min={x.min().item():.6f} max={x.max().item():.6f} mean={x.mean().item():.6f}")
+        except Exception:
+            print("denoised x: <could not print stats>")
+
         x = unpack(x.float(), height, width)
-        x = self.ae.decode(x)
+        try:
+            print(f"after unpack: device={x.device} dtype={x.dtype} shape={x.shape} min={x.min().item():.6f} max={x.max().item():.6f} mean={x.mean().item():.6f}")
+        except Exception:
+            print("after unpack: <could not print stats>")
+
+        # ensure AE decoder runs in float32 on MPS to avoid precision truncation
+        x = x.to(torch.float32)
+        dec = self.ae.decode(x)
+        try:
+            print(f"decoded: device={dec.device} dtype={dec.dtype} shape={dec.shape} min={dec.min().item():.6f} max={dec.max().item():.6f} mean={dec.mean().item():.6f}")
+        except Exception:
+            print("decoded: <could not print stats>")
+        x = dec
         self.offload_model_to_cpu(self.ae.decoder)
 
         x1 = x.clamp(-1, 1)
         x1 = rearrange(x1[-1], "c h w -> h w c")
         output_img = Image.fromarray((127.5 * (x1 + 1.0)).cpu().byte().numpy())
+        # if output is nearly black, dump debug arrays
+        arr = (127.5 * (x1 + 1.0)).cpu().numpy()
+        if arr.max() == 0 or arr.mean() < 1.0:
+            os.makedirs("output/inference", exist_ok=True)
+            debug_path = f"output/inference/debug_{seed}.npz"
+            print(f"Saving debug arrays to {debug_path}")
+            import numpy as _np
+
+            _np.savez(debug_path, denoised=x.detach().cpu().numpy(), decoded=dec.detach().cpu().numpy(), post=arr)
         return output_img
 
     def offload_model_to_cpu(self, *models):

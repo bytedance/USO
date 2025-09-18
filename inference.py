@@ -56,6 +56,7 @@ class InferenceArgs:
     offload: bool = False
     num_images_per_prompt: int = 1
     model_type: Literal["flux-dev", "flux-dev-fp8", "flux-schnell"] = "flux-dev"
+    device: str = "auto"  # Add device parameter
     width: int = 1024
     height: int = 1024
     num_steps: int = 25
@@ -74,7 +75,23 @@ class InferenceArgs:
 
 
 def main(args: InferenceArgs):
-    accelerator = Accelerator()
+    # Set device based on parameter
+    if args.device == "auto":
+        if torch.cuda.is_available():
+            device = torch.device("cuda")
+        elif torch.backends.mps.is_available():
+            device = torch.device("mps")
+        else:
+            device = torch.device("cpu")
+    else:
+        device = torch.device(args.device)
+    
+    print(f"Using device: {device}")
+    
+    accelerator = Accelerator(device_placement=False)
+    
+    # Force all models to use the specified device
+    torch.cuda.set_device(device) if device.type == "cuda" else None
 
     # init SigLIP model
     siglip_processor = None
@@ -87,12 +104,12 @@ def main(args: InferenceArgs):
         siglip_model = SiglipVisionModel.from_pretrained(siglip_path)
 
         siglip_model.eval()
-        siglip_model.to(accelerator.device)
+        siglip_model.to(device)
         print("SigLIP model loaded successfully")
 
     pipeline = USOPipeline(
         args.model_type,
-        accelerator.device,
+        device,
         args.offload,
         only_lora=args.only_lora,
         lora_rank=args.lora_rank,
@@ -111,7 +128,7 @@ def main(args: InferenceArgs):
         data_root = os.path.dirname(args.eval_json_path)
     else:
         data_root = ""
-        data_dicts = [{"prompt": args.prompt, "image_paths": args.image_paths}]
+        data_dicts = [{"prompt": args.prompt, "image_paths": args.image_paths or []}]
 
     print(
         f"process: {accelerator.num_processes}/{accelerator.process_index}, \

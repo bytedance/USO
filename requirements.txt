@@ -9,8 +9,8 @@ gradio==5.22.0
 opencv-python
 matplotlib
 safetensors==0.4.5
-scipy==1.10.1
-numpy==1.24.4
+scipy==1.14.0
+numpy
 onnxruntime
 # httpx==0.23.3
 git+https://github.com/openai/CLIP.git

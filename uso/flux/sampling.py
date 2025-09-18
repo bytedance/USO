@@ -258,6 +258,11 @@ def denoise(
             guidance=guidance_vec,
             siglip_inputs=siglip_inputs,
         )
+        if i == 0:
+            try:
+                print(f"pred stats step0: device={pred.device} dtype={pred.dtype} shape={pred.shape} min={pred.min().item():.6f} max={pred.max().item():.6f} mean={pred.mean().item():.6f}")
+            except Exception:
+                print("pred stats step0: <could not compute>")
         img = img + (t_prev - t_curr) * pred
         i += 1
     return img
